@@ -301,7 +301,13 @@ export default class Proxy extends EventEmitter {
     intercept = wrapAsync(intercept)
     intercept = asIntercept(opts, intercept) // TODO: test asIntercept this, args, async
     intercept = otherIntercept(opts, intercept) // TODO: test otherIntercept this, args, async
+    
     this._intercepts[phase].push(intercept)
+    const removeIntercept = () => {
+      this._intercepts[phase] = this._intercepts[phase].filter((func) => func !== intercept);
+    }
+
+    return removeIntercept;
   }
 
   close() {
